@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DataVisuals Applications</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        h1 {
+            text-align: center;
+            color: #2d3748;
+            font-size: 48px;
+            margin-bottom: 48px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .carousel-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .carousel-wrapper {
+            position: relative;
+            overflow: hidden;
+            border-radius: 16px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+        }
+
+        .carousel-slides {
+            display: flex;
+            transition: transform 0.5s cubic-bezier(0.4, 0.0, 0.2, 1);
+        }
+
+        .carousel-slide {
+            min-width: 100%;
+            padding: 40px;
+            box-sizing: border-box;
+        }
+
+        .app-card {
+            background: white;
+            border-radius: 12px;
+            padding: 48px;
+            text-align: center;
+            min-height: 450px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .app-icon {
+            font-size: 72px;
+            margin-bottom: 24px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .app-card h2 {
+            font-size: 36px;
+            margin: 0 0 24px 0;
+            color: #2d3748;
+            font-weight: 700;
+        }
+
+        .app-description {
+            font-size: 16px;
+            line-height: 1.8;
+            color: #4a5568;
+            margin-bottom: 32px;
+            flex-grow: 1;
+        }
+
+        .app-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 24px;
+            padding-top: 24px;
+            border-top: 2px solid #e2e8f0;
+        }
+
+        .tech-stack {
+            font-size: 14px;
+            color: #667eea;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .last-updated {
+            font-size: 14px;
+            color: #718096;
+            font-style: italic;
+        }
+
+        .app-link {
+            display: inline-block;
+            padding: 14px 32px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .app-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.95);
+            border: none;
+            font-size: 36px;
+            padding: 16px 24px;
+            cursor: pointer;
+            border-radius: 8px;
+            color: #667eea;
+            transition: all 0.3s ease;
+            z-index: 10;
+            font-weight: bold;
+        }
+
+        .carousel-btn:hover {
+            background: white;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .carousel-btn:active {
+            transform: translateY(-50%) scale(0.95);
+        }
+
+        .carousel-btn.prev {
+            left: 20px;
+        }
+
+        .carousel-btn.next {
+            right: 20px;
+        }
+
+        .carousel-indicators {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-top: 32px;
+        }
+
+        .indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .indicator:hover {
+            background: rgba(255, 255, 255, 0.8);
+            transform: scale(1.2);
+        }
+
+        .indicator.active {
+            background: white;
+            width: 40px;
+            border-radius: 6px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 48px;
+            padding: 32px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .footer h3 {
+            color: #2d3748;
+            margin-bottom: 16px;
+            font-size: 24px;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+
+        .footer-link {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 8px 16px;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .footer-link:hover {
+            background: #f7fafc;
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 32px;
+                margin-bottom: 32px;
+            }
+
+            .carousel-btn {
+                font-size: 24px;
+                padding: 12px 16px;
+            }
+
+            .carousel-btn.prev {
+                left: 10px;
+            }
+
+            .carousel-btn.next {
+                right: 10px;
+            }
+
+            .app-card {
+                padding: 32px 24px;
+                min-height: 400px;
+            }
+
+            .app-icon {
+                font-size: 56px;
+            }
+
+            .app-card h2 {
+                font-size: 28px;
+            }
+
+            .app-description {
+                font-size: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>DataVisuals Applications</h1>
+
+        <div class="carousel-container">
+            <div class="carousel-wrapper">
+                <div class="carousel-slides" id="carousel">
+                    <!-- Slide 1: Andraw -->
+                    <div class="carousel-slide">
+                        <div class="app-card">
+                            <div class="app-icon">📐</div>
+                            <h2>Andraw</h2>
+                            <p class="app-description">
+                                Interactive diagramming and visualization tool with support for AWS, Azure, GCP, Kubernetes, and network diagrams. Features smart guides, multi-page canvases, and real-time collaboration capabilities.
+                            </p>
+                            <div class="app-meta">
+                                <span class="tech-stack">JavaScript • HTML5 Canvas • CSS</span>
+                                <span class="last-updated">Last updated: October 7, 2025</span>
+                            </div>
+                            <a href="https://github.com/DataVisuals/andraw" class="app-link">View Repository →</a>
+                        </div>
+                    </div>
+
+                    <!-- Slide 2: LineageViewer -->
+                    <div class="carousel-slide">
+                        <div class="app-card">
+                            <div class="app-icon">🔗</div>
+                            <h2>LineageViewer</h2>
+                            <p class="app-description">
+                                Data lineage visualization tool for tracking data flows and dependencies across complex data pipelines. Provides interactive graphs showing data transformations and relationships.
+                            </p>
+                            <div class="app-meta">
+                                <span class="tech-stack">React • D3.js • Python</span>
+                                <span class="last-updated">Last updated: September 16, 2025</span>
+                            </div>
+                            <a href="https://github.com/DataVisuals/LineageViewer" class="app-link">View Repository →</a>
+                        </div>
+                    </div>
+
+                    <!-- Slide 3: StockAnalysisPlatform -->
+                    <div class="carousel-slide">
+                        <div class="app-card">
+                            <div class="app-icon">📈</div>
+                            <h2>Stock Analysis Platform</h2>
+                            <p class="app-description">
+                                Comprehensive stock market analysis platform with real-time data visualization, technical indicators, portfolio tracking, and advanced charting capabilities for traders and investors.
+                            </p>
+                            <div class="app-meta">
+                                <span class="tech-stack">React • Python • pandas</span>
+                                <span class="last-updated">Last updated: September 30, 2025</span>
+                            </div>
+                            <a href="https://github.com/DataVisuals/StockAnalysisPlatform" class="app-link">View Repository →</a>
+                        </div>
+                    </div>
+
+                    <!-- Slide 4: Calendar App -->
+                    <div class="carousel-slide">
+                        <div class="app-card">
+                            <div class="app-icon">📅</div>
+                            <h2>Calendar App</h2>
+                            <p class="app-description">
+                                Modern calendar application with event management, scheduling, and reminders. Features a clean interface for managing personal and professional appointments.
+                            </p>
+                            <div class="app-meta">
+                                <span class="tech-stack">JavaScript • CSS • HTML</span>
+                                <span class="last-updated">Last updated: October 7, 2025</span>
+                            </div>
+                            <a href="https://github.com/DataVisuals/calendar-app" class="app-link">View Repository →</a>
+                        </div>
+                    </div>
+
+                    <!-- Slide 5: ViewDependencies -->
+                    <div class="carousel-slide">
+                        <div class="app-card">
+                            <div class="app-icon">🌳</div>
+                            <h2>ViewDependencies</h2>
+                            <p class="app-description">
+                                Dependency tree visualization tool for analyzing package dependencies and relationships in software projects. Helps identify circular dependencies and optimize dependency graphs.
+                            </p>
+                            <div class="app-meta">
+                                <span class="tech-stack">JavaScript • Graph Algorithms</span>
+                                <span class="last-updated">Last updated: June 7, 2025</span>
+                            </div>
+                            <a href="https://github.com/DataVisuals/ViewDependencies" class="app-link">View Repository →</a>
+                        </div>
+                    </div>
+
+                    <!-- Slide 6: Expectations -->
+                    <div class="carousel-slide">
+                        <div class="app-card">
+                            <div class="app-icon">✓</div>
+                            <h2>Expectations</h2>
+                            <p class="app-description">
+                                Data validation and quality assurance framework for defining and testing data expectations. Ensures data integrity and quality across data pipelines and workflows.
+                            </p>
+                            <div class="app-meta">
+                                <span class="tech-stack">Python • Data Validation</span>
+                                <span class="last-updated">Last updated: December 30, 2024</span>
+                            </div>
+                            <a href="https://github.com/DataVisuals/Expectations" class="app-link">View Repository →</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Navigation Arrows -->
+                <button class="carousel-btn prev" onclick="changeSlide(-1)">‹</button>
+                <button class="carousel-btn next" onclick="changeSlide(1)">›</button>
+            </div>
+
+            <!-- Indicators -->
+            <div class="carousel-indicators">
+                <span class="indicator active" onclick="currentSlide(0)"></span>
+                <span class="indicator" onclick="currentSlide(1)"></span>
+                <span class="indicator" onclick="currentSlide(2)"></span>
+                <span class="indicator" onclick="currentSlide(3)"></span>
+                <span class="indicator" onclick="currentSlide(4)"></span>
+                <span class="indicator" onclick="currentSlide(5)"></span>
+            </div>
+        </div>
+
+        <div class="footer">
+            <h3>Explore More</h3>
+            <div class="footer-links">
+                <a href="https://github.com/DataVisuals" class="footer-link">🏠 DataVisuals Organization</a>
+                <a href="https://github.com/DataVisuals?tab=repositories" class="footer-link">⭐ All Repositories</a>
+                <a href="mailto:contact@datavisuals.com" class="footer-link">📧 Contact Us</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentSlideIndex = 0;
+        let autoAdvanceInterval;
+
+        function changeSlide(direction) {
+            const slides = document.querySelectorAll('.carousel-slide');
+            const indicators = document.querySelectorAll('.indicator');
+
+            currentSlideIndex = (currentSlideIndex + direction + slides.length) % slides.length;
+
+            updateCarousel();
+            resetAutoAdvance();
+        }
+
+        function currentSlide(index) {
+            currentSlideIndex = index;
+            updateCarousel();
+            resetAutoAdvance();
+        }
+
+        function updateCarousel() {
+            const carousel = document.getElementById('carousel');
+            const indicators = document.querySelectorAll('.indicator');
+
+            carousel.style.transform = `translateX(-${currentSlideIndex * 100}%)`;
+
+            indicators.forEach((indicator, index) => {
+                if (index === currentSlideIndex) {
+                    indicator.classList.add('active');
+                } else {
+                    indicator.classList.remove('active');
+                }
+            });
+        }
+
+        function startAutoAdvance() {
+            autoAdvanceInterval = setInterval(() => {
+                changeSlide(1);
+            }, 5000);
+        }
+
+        function resetAutoAdvance() {
+            clearInterval(autoAdvanceInterval);
+            startAutoAdvance();
+        }
+
+        // Start auto-advance on page load
+        startAutoAdvance();
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') {
+                changeSlide(-1);
+            } else if (e.key === 'ArrowRight') {
+                changeSlide(1);
+            }
+        });
+
+        // Touch swipe support for mobile
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        const carouselWrapper = document.querySelector('.carousel-wrapper');
+
+        carouselWrapper.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+
+        carouselWrapper.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        });
+
+        function handleSwipe() {
+            if (touchEndX < touchStartX - 50) {
+                changeSlide(1);
+            }
+            if (touchEndX > touchStartX + 50) {
+                changeSlide(-1);
+            }
+        }
+    </script>
+</body>
+</html>
